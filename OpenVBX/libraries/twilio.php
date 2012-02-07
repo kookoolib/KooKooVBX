@@ -230,7 +230,7 @@
 			else if($cls=="Gather")
 				$this->tag = "CollectDtmf";
 			else if($cls=="Redirect")
-				$this->tag = "GoTo";
+				$this->tag = "GoToUrl";
 							
 			else
 				$this->tag = get_class($this);
@@ -301,6 +301,12 @@
 		}
 
 		function addDial($body=NULL, $attr = array()){
+			//KooKoo should do this for all tags. Update attributes
+			if(isset($attr["timeLimit"]))
+			{
+				$attr["limittime"] = $attr["timeLimit"];
+				unset($attr["timeLimit"]);
+			}
 			return self::append(new Dial($body, $attr));
 		}
 
@@ -333,6 +339,11 @@
 		}
 
 		function addRecord($attr = array()){
+			if(isset($attr["maxLength"]))
+			{
+				$attr["maxduration"] = $attr["maxLength"];
+				unset($attr["maxduration"]);
+			}
 			return self::append(new Record(NULL, $attr));
 		}
 
@@ -437,7 +448,7 @@
 	class Record extends Verb {
 
 		protected $valid = array('action','method','timeout','finishOnKey',
-			'maxLength','transcribe','transcribeCallback');
+			'maxLength','transcribe','transcribeCallback','silence','maxduration');
 
 	}
 
@@ -445,7 +456,7 @@
 	class Dial extends Verb {
 
 		protected $valid = array('action','method','timeout','hangupOnStar',
-			'timeLimit','callerId');
+			'timeLimit','callerId','record','moh','limittime');
 
 		protected $nesting = array('Number','Conference', 'Client');
 
