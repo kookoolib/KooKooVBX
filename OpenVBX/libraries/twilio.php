@@ -313,6 +313,22 @@
 		}
 
 		function addGather($attr = array()){
+			//KooKoo should do this for all tags. Update attributes
+			if(isset($attr["numDigits"]))
+			{
+				$attr["l"] = $attr["numDigits"];
+				unset($attr["numDigits"]);
+			}
+			if(isset($attr["timeout"]))
+			{
+				$attr["o"] = $attr["timeout"];
+				unset($attr["timeout"]);
+			}
+			if(isset($attr["finishOnKey"]))
+			{
+				$attr["t"] = $attr["finishOnKey"];
+				unset($attr["finishOnKey"]);
+			}
 			return self::append(new Gather($attr));
 		}
 
@@ -470,10 +486,10 @@
 	class Gather extends Verb {
 
 		protected $valid = array('action','method','timeout','finishOnKey',
-			'numDigits');
+			'numDigits','l','o','t');
 
 		protected $nesting = array('Say', 'Play', 'Pause');
-
+		
 		function __construct($attr = array()){
 			parent::__construct(NULL, $attr);
 		}
