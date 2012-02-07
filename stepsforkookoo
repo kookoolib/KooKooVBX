@@ -1,8 +1,0 @@
-1.modified OpenVBX/libraries/twilio.php and updated Verb Construct to give a different xml
-2.Changed Twilio endpoint to point to something else so it does not connect to Twilio
-3.Put cid and called_number in session variables in start plugin so that we can use the Session variables in other places. 
-4.Updated $_REQUEST['From'] etc to $_SESSION['From']
-5.Updated vbx_incoming_numbers.php to make the right REST KooKoo API calls.
-6.Updated twilio_endpoint in settings in database to point to "http://kookoo.in/restkookoo/index.php"
-7.Updated controllers/settings/site.php by comment Twilio tenant settings
-8.Updated views to remove Twilio references
