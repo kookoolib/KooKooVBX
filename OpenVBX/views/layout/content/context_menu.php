@@ -1,7 +1,7 @@
 		<div id="vbx-context-menu" class="context-menu">
 			<!--KooKoo ToDo Update to use KooKoo and then uncomment-->
-			<div id="vbx-call-sms-buttons" style="display:none">
-				<button class="call-button twilio-call" href="<?php echo site_url('messages/call') ?>"><span>Call</span></button>-->
+			<div id="vbx-call-sms-buttons">
+				<button style="display:none" class="call-button twilio-call" href="<?php echo site_url('messages/call') ?>"><span>Call</span></button>
 				<button class="sms-button twilio-sms" href="<?php echo site_url('messages/sms') ?>"><span>SMS</span></button>
 			</div>
 			

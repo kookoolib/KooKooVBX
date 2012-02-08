@@ -111,7 +111,7 @@ class VBX_Sms_message extends Model {
 	function send_message($from, $to, $message, $api_type='twilio')
 	{
 		$from = PhoneNumber::normalizePhoneNumberToE164($from);
-		$to = PhoneNumber::normalizePhoneNumberToE164($to);
+		//$to = PhoneNumber::normalizePhoneNumberToE164($to);
 
 		if ($api_type == 'twilio') {
 
@@ -119,23 +119,19 @@ class VBX_Sms_message extends Model {
 										   $this->twilio_token,
 										   $this->twilio_endpoint);
 			error_log("Sending sms from $from to $to with content: $message");
-			$response = $twilio->request("Accounts/{$this->twilio_sid}/SMS/Messages",
-										 'POST',
-										 array( "From" => $from,
-												"To" => $to,
-												"Body" => $message,
-												)
-										 );
-			$status = isset($response->ResponseXml)? $response->ResponseXml->SMSMessage->Status : 'failed';
+			$api_key="{$this->twilio_sid}";
+			$response = $twilio->request("../../outbound/outbound_sms.php?phone_no=$to&api_key=$api_key&message=".urlencode($message));
+			$status = isset($response->ResponseXml)? $response->ResponseXml->status : 'failed';
 			if($response->IsError ||
-			   ($status != 'sent' && $status != 'queued'))
+			   ($status != 'success'))
 			{
 				error_log("SMS not sent - Error Occurred");
 				error_log($response->ErrorMessage);
 				throw new VBX_Sms_messageException($response->ErrorMessage);
 			}
 
-		} else if ($api_type == 'tropo') {
+		} 
+		else if ($api_type == 'tropo') {
 
 			/** Updated, Disruptive Technologies, for Tropo VBX conversion **/
 			// Loop through each application, and get a listing of all phone numbers
