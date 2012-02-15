@@ -70,7 +70,8 @@ else
 {
 	for($i=1; $i < $repeat_count; $i++)
 	{
-		$gather->addPause(array('length' => 5));
+		//KooKoo does not have pause
+		//$gather->addPause(array('length' => 5));
 		$gather->append($verb);
 	}
 }

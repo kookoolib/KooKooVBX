@@ -326,7 +326,9 @@ class Site extends User_Controller
 				$user->fields[] = 'tenant_id'; // monkey patching to override tenant_id
 				$user->first_name = '';
 				$user->last_name = '';
-				$user->password = '';
+				//$user->password = '';
+				//hard coding this as mails are not being sent
+				$user->password=VBX_User::salt_encrypt('test123456');
 				$user->values['tenant_id'] = $data['id']; // hidden field not in ORM
 				$user->email = $tenant['admin_email'];
 				$user->is_active = TRUE;

@@ -357,8 +357,8 @@ class AudioFiles extends User_Controller
 			$recording = $this->request->RecordingUrl . '.mp3';
 			$this->session->set_userdata('current-recording', $recording);
 		}
-
-		$this->response->addPause(array('length' => 1));
+		//KooKoo does not have Pause
+		//$this->response->addPause(array('length' => 1));
 		$this->response->addSay('Recorded the following: ');
 		$gather = $this->response->addGather(array('numDigits' => 1,
 												   'method' => 'POST',
