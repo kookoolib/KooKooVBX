@@ -13,7 +13,7 @@ class TwimlDial {
 	 */
 	private $use_sessions = false;
 	
-	static $hangup_stati = array('completed', 'answered');
+	static $hangup_stati = array('not_answered', 'answered');
 	static $default_voicemail_message = 'Please leave a message. Press the pound key when you are finished.';
 	
 	protected $cookie_name;
@@ -262,14 +262,17 @@ class TwimlDial {
 	 * @return void
 	 */
 	public function set_state() {
-		$dial_status = isset($_REQUEST['DialCallStatus'])? $_REQUEST['DialCallStatus'] : null;
+		$dial_status = isset($_REQUEST['status'])? $_REQUEST['status'] : null;
 		$state = $this->_get_state();
 
 		// Process state from cookie
 		if (in_array($dial_status, self::$hangup_stati)) {
 			$this->state = 'hangup';
 		}
-		elseif (!$state) {
+		else{
+			$this->state = 'new';
+		}
+		/*elseif (!$state) {
 			$this->state = 'new';
 		}
 		else {
@@ -286,7 +289,10 @@ class TwimlDial {
 				}
 			}
 			$this->state = $state;
-		}
+		}*/
+		
+		//for some reason the cookie sessions are not being set properly
+		//$this->state = 'new';
 	}
 	
 	/**
