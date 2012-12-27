@@ -231,6 +231,8 @@
 				$this->tag = "CollectDtmf";
 			else if($cls=="Redirect")
 				$this->tag = "GoToUrl";
+					else if($cls=="Sms")
+				$this->tag = "sendsms";
 							
 			else
 				$this->tag = get_class($this);
@@ -335,6 +337,7 @@
 				$attr["t"] = $attr["finishOnKey"];
 				unset($attr["finishOnKey"]);
 			}
+					
 			return self::append(new Gather($attr));
 		}
 
@@ -364,6 +367,11 @@
 		}
 
 		function addSms($body=NULL, $attr = array()){
+						if(isset($attr["number"]))
+			{
+				$attr["to"] = $attr["number"];
+				unset($attr["number"]);
+			}
 			return self::append(new Sms($body, $attr));
 		}
 

@@ -1,6 +1,6 @@
 <?php
+include_once('TwimlMenu.php');
 $response = new Response();
-
 /* Fetch all the data to operate the menu */
 $digits = isset($_REQUEST['data'])? $_REQUEST['data'] : false;
 $prompt = AppletInstance::getAudioSpeechPickerValue('prompt');
@@ -8,7 +8,6 @@ $invalid_option = AppletInstance::getAudioSpeechPickerValue('invalid-option');
 $repeat_count = AppletInstance::getValue('repeat-count', 3);
 $next = AppletInstance::getDropZoneUrl('next');
 $selected_item = false;
-
 /* Build Menu Items */
 $choices = (array) AppletInstance::getDropZoneUrl('choices[]');
 $keys = (array) AppletInstance::getDropZoneValue('keys[]');
@@ -28,57 +27,58 @@ if($digits !== false)
 	if(!empty($menu_items[$digits]))
 	{
 		$selected_item = $menu_items[$digits];
-	}
-	else
-	{
-		if($invalid_option)
-		{
-			$verb = AudioSpeechPickerWidget::getVerbForValue($invalid_option, null);
-			$response->append($verb);
-			$response->addRedirect();
-		}
-		else
-		{			 
-			$response->addSay('You selected an incorrect option.');
-			$response->addRedirect();
-		}
-		
+		$response->addRedirect($selected_item);
 		$response->Respond();
 		exit;
 	}
-		
 }
 
-if(!empty($selected_item))
-{
-	$response->addRedirect($selected_item);
+$objMenuTriesOver = new TwimlMenu();
+if($digits !== false){
+	$menutriesover =  $objMenuTriesOver->invalidTriesOver();
+   if( $menutriesover && !empty($next)){
+			$response->addRedirect($next);
+			$response->Respond();
+			exit;	
+	}
+	$gather = $response->addGather(compact('numDigits'));
+	if($invalid_option){
+	$verb = AudioSpeechPickerWidget::getVerbForValue($invalid_option, null);
+	$gather->append($verb);
+	}
+	$verb = AudioSpeechPickerWidget::getVerbForValue($prompt, null);
+	$gather->append($verb);
 	$response->Respond();
 	exit;
 }
-
+$menutriesover =  $objMenuTriesOver->invalidTriesOver();
+$objMenuTriesOver->invalidtries=1;
+$objMenuTriesOver->save_invalidTries();
 $gather = $response->addGather(compact('numDigits'));
 $verb = AudioSpeechPickerWidget::getVerbForValue($prompt, null);
 $gather->append($verb);
+$response->Respond();
+exit;
+
 
 // Infinite loop
+
+/* if($invalid_option)
+{
+	//	$response->addRedirect();
+}
+else
+{
+	$verb = AudioSpeechPickerWidget::getVerbForValue($invalid_option, null);
+	$gather->append($verb);
+	$response->Respond();
+	//	$response->addRedirect();
+
+}
+ */
 if($repeat_count == -1)
 {
 	$response->addRedirect();
 	// Specified repeat count
 }
-else
-{
-	for($i=1; $i < $repeat_count; $i++)
-	{
-		//KooKoo does not have pause
-		//$gather->addPause(array('length' => 5));
-		$gather->append($verb);
-	}
-}
 
-if(!empty($next))
-{
-	$response->addRedirect($next);
-}
-
-$response->Respond();

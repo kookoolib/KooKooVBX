@@ -3,9 +3,7 @@ $defaultNumberOfChoices = 2;
 $keys = (array) AppletInstance::getValue('keys[]', array('1','2') );
 $choices = (array) AppletInstance::getValue('choices[]');
 ?>
-
 <div class="vbx-applet menu-applet">
-
 		<h2>Menu Prompt</h2>
 		<p>When the caller reaches this menu they will hear:</p>
 		<div class="menu-prompt">
@@ -60,7 +58,10 @@ $choices = (array) AppletInstance::getValue('choices[]');
 
 		<h3>Do you want to repeat the menu back?</h3>
 		<div class="vbx-full-pane">
-			<p>Repeat the menu back to the caller.  Enter zero if you do not want the menu to repeat.</p>
+			<p>Repeat the menu back to the caller. 
+			   Enter zero if you do not want the menu to repeat.
+			   -1 to repeat infinite times
+			   </p>
 			<fieldset class="vbx-input-complex vbx-input-container">
 				<input type="text" name="repeat-count" class="left tiny" value="<?php echo AppletInstance::getValue('repeat-count', 3) ?>" />
 				<label class="field-label-left">time(s)</label>
@@ -74,7 +75,6 @@ $choices = (array) AppletInstance::getValue('choices[]');
 				<?php echo AppletUI::DropZone('next'); ?>
 			</fieldset>
 		</div><!-- .vbx-split-pane -->
-
 		<h3>Oops! The caller didn't enter something right.</h3>
 		<p>Customize a specific message about the invalid option.</p>
 		<?php echo AppletUI::audioSpeechPicker('invalid-option'); ?>

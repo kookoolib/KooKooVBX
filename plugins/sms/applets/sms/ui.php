@@ -8,6 +8,11 @@
 	<fieldset class="vbx-input-container">
 		<textarea name="sms" class="medium"><?php echo AppletInstance::getValue('sms'); ?></textarea>
 	</fieldset>
+		
+					<h2>Recipients Phone Number</h2>
+						<div class="vbx-input-container input">
+							<input type="text" class="medium" name="sms-whom-number" value="<?php echo AppletInstance::getValue('sms-whom-number') ?>"/>
+						</div>
 	
 	<h2>Next</h2>
 	<p>After the message is sent, continue to the next applet</p>
